@@ -148,3 +148,22 @@ main {
     padding: 18px;
     margin-top: 18px;
 }
+
+/* Make temperature image fit nicely inside the card */
+.temp-image {
+    width: 100%;
+    /* Fill the width of the info box */
+    max-width: 600px;
+    /* Cap the width so it doesn’t get huge */
+    height: auto;
+    /* Keep the image aspect ratio */
+    display: block;
+    /* Allows margin auto to center it */
+    margin: 12px auto;
+    /* Center the image */
+    border-radius: 12px;
+    /* Rounded corners */
+    border: 1px solid #223055;
+    object-fit: contain;
+    /* Ensure the whole image is visible */
+}
