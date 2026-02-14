@@ -1,0 +1,119 @@
+<!-- HTML is the structure, CSS is the design, JavaScript is the behavior.
+You can put CSS and JavaScript inside an HTML file, or you can link them from separate files. 
+Both are normal. So, what I am doing is basically I am writing the java script part here. I am also adding its leaflet library here -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" /> <!-- This just just for character encoding-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- This is so that it fits on the phone-->
+    <title> Relief Jacket- Map </title>
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- This will style the page so that it has styles for the map(colors, zoom buttons, etc)-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- <style> is basically a place inside this HTML file where I am writing my CSS code relating to styling. We can put this exact same code in style.css file as well-->
+    <style>
+        /* #map means: the element with id="map" */
+        #map {
+            height: 400px;
+            /* Height of the map box */
+            width: 100%;
+            /* Full width */
+            border-radius: 12px;
+            margin-top: 15px;
+        }
+    </style>
+    <!-- Similar to how we use style to put the CSS code we use script to put the Javascript code. Or we use it to link to a JavaScript file/library-->
+    <!-- Leaflet JavaScript file (this gives us L.map(), L.marker(), etc.)
+    defer means: load this AFTER the HTML is loaded -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+    <!-- This basically says download this JavaScript file from the internet and run it on my page-->
+
+</head>
+
+<body>
+    <!-- Page header -->
+    <header>
+        <h1>🗺️ Map</h1>
+        <p>Shows your current location (prototype)</p>
+
+    </header>
+
+    <!-- Main content -->
+    <main>
+        <div class="info-box">
+            <h2> Your Location </h2>
+            <!-- This is will be empty because rthis iwll where Javascript will draw the map to-->
+
+            <div id="map"></div>
+            <!-- This text will change when we get your location -->
+            <p id="statusText">Getting your location...</p>
+        </div>
+
+        <!-- This will get you back to the index page -->
+        <a class="back-link" href="index.html"> ← Back to Home </a>
+    </main>
+
+
+
+    <!-- This is where I will write my Javescript code-->
+    <script>
+        // Find the paragraph with id="statusText"
+        // document.getElementById means:
+        // “Go to the HTML page, find the element that has id="statusText", and save it in a variable called statusText."
+        const statusText = document.getElementById("statusText");
+
+        // Check if the browser supports getting location. The navigator.geolocation is a built-in browser feature. It is an API
+        if (!navigator.geolocation) {
+            statusText.textContent = "Your browser does not support location.";  // If geolocation does NOT exist
+        } else {
+            // Ask the browser for the user's current position
+            // This part is defined by the browser’s Geolocation API: 
+            // navigator.geolocation.getCurrentPosition( SUCCESS_FUNCTION, ERROR_FUNCTION ); 
+            // That is the official format.
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    // This function runs when location is found successfully
+
+                    // Extract latitude from the position object
+                    const latitude = position.coords.latitude;
+
+                    // Extract longitude from the position object
+                    const longitude = position.coords.longitude;
+
+                    // Show the numbers on the page
+                    statusText.textContent =
+                        "Location: " +
+                        latitude.toFixed(5) +
+                        ", " +
+                        longitude.toFixed(5); // + is used to join text together
+
+                    // Create a map inside the div with id="map"
+                    // setView([lat, long], zoomLevel)
+                    const map = L.map("map").setView([latitude, longitude], 15);
+
+                    // Load the actual map images from OpenStreetMap (API)
+                    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                        attribution: "© OpenStreetMap contributors",
+                    }).addTo(map);
+
+                    // Put a marker (pin) at the user's location
+                    L.marker([latitude, longitude])
+                        .addTo(map)
+                        .bindPopup("You are here 📍")
+                        .openPopup();
+                },
+
+                function () {
+                    // This function runs if user blocks location permission
+                    statusText.textContent = "Location permission denied.";
+                }
+            );
+        }
+    </script>
+</body>
+
+</html>

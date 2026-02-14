@@ -1,0 +1,150 @@
+/* 
+  This file controls how your website looks (colors, layout, spacing, etc.)
+  HTML = structure
+  CSS = design
+*/
+
+/* This applies to the entire page */
+body {
+    margin: 0;
+    /* Remove default browser spacing */
+    font-family: Arial, sans-serif;
+    /* Set font style */
+    background-color: #0b1220;
+    /* Dark blue background */
+    color: white;
+    /* Text color */
+}
+
+/* Styling for the top header section */
+header {
+    background-color: #121c33;
+    /* Slightly lighter background for header */
+    padding: 20px;
+    /* Space inside the header */
+}
+
+/* Main title inside header */
+header h1 {
+    margin: 0;
+    /* Remove default margin */
+    font-size: 22px;
+    /* Text size */
+}
+
+/* Small text under the title */
+header p {
+    margin: 6px 0 0;
+    /* Space only on top */
+    color: #b8c5e6;
+    /* Light gray-blue color */
+    font-size: 14px;
+    /* Smaller font */
+}
+
+/* Main content area */
+main {
+    padding: 20px;
+    /* Space around content */
+    max-width: 900px;
+    /* Limit width so it doesn't stretch too wide */
+    margin: auto;
+    /* Center the content */
+}
+
+/* Grid layout for home page buttons */
+.button-grid {
+    display: grid;
+    /* Turn this into a grid layout */
+    grid-template-columns: 1fr 1fr;
+    /* 2 columns */
+    gap: 15px;
+    /* Space between boxes */
+    margin-top: 20px;
+    /* Space above grid */
+}
+
+/* Mobile-friendly: 1 column on small screens */
+@media (max-width: 700px) {
+    .button-grid {
+        grid-template-columns: 1fr;
+        /* Only 1 column on small screens */
+    }
+}
+
+/* Style for each big clickable button */
+.big-button {
+    display: block;
+    /* Makes the whole box clickable */
+    padding: 20px;
+    /* Space inside the box */
+    border-radius: 15px;
+    /* Rounded corners */
+    background-color: #121c33;
+    /* Background color */
+    border: 1px solid #223055;
+    /* Border color */
+    text-decoration: none;
+    /* Remove underline from link */
+    color: white;
+    /* Text color */
+}
+
+/* When user hovers mouse over button */
+.big-button:hover {
+    border-color: #4aa3ff;
+    /* Change border color on hover */
+}
+
+/* Special style for SOS button */
+.big-button.sos {
+    border-color: #ff4a4a;
+    /* Red border for SOS */
+}
+
+/* Hover effect for SOS button */
+.big-button.sos:hover {
+    border-color: #ff4a4a;
+    /* Keep red border */
+    background-color: #1a1f35;
+    /* Slightly different background */
+}
+
+/* Heading inside buttons */
+.big-button h2 {
+    margin: 0 0 8px;
+    /* Space below heading */
+    font-size: 18px;
+}
+
+/* Small text inside buttons */
+.big-button p {
+    margin: 0;
+    color: #b8c5e6;
+    font-size: 14px;
+}
+
+/* Back to home link style */
+.back-link {
+    display: inline-block;
+    /* Makes margin work properly */
+    margin-top: 15px;
+    color: #4aa3ff;
+    /* Blue color */
+    text-decoration: none;
+    /* No underline */
+}
+
+/* Underline link when hovered */
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* Simple box used on inner pages */
+.info-box {
+    background-color: #121c33;
+    border: 1px solid #223055;
+    border-radius: 15px;
+    padding: 18px;
+    margin-top: 18px;
+}
