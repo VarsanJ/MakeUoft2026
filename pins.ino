@@ -11,16 +11,13 @@ const int TRIGGER1 = 5;
 // Lighting
 const int LED1 = 11;
 const int LED2 = 12;
-// Servo
-const int SERVOLARGE1 = 6;
-const int SERVOSMALL1 = 10;
 // Display
 const int DIN = 7;
 const int CS = 8;
 const int CLOCK = 9;
 
 // Analog Pins
-const int temperatureSignal = A1;
+const int TEMPSIG = A1;
 
 void setup() {
     
