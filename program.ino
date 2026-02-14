@@ -3,7 +3,7 @@ Last Modified: 2026-02-14, 11:47 AM
 File Owner: Varsan Jeyakkumar
  */
 
-#include <Arduino.h>
+#include <Arduino.h> // for Arduino IDE
 #include <LedControl.h>
 
 // Digital Pins
