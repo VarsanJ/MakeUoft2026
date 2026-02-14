@@ -3,7 +3,7 @@ Last Modified: 2026-02-14, 3:00 PM
 File Owner: Varsan Jeyakkumar
  */
 
-#include <Arduino.h> // for Arduino IDE
+// #include <Arduino.h> for Arduino IDE FOR VS CODE USE
 #include <LiquidCrystal.h> // for LCD Display
 #include <DHT.h> // for DHT11 Temperature Sensor
 
