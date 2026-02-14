@@ -3,8 +3,9 @@ Last Modified: 2026-02-14, 11:47 AM
 File Owner: Varsan Jeyakkumar
  */
 
-#include <Arduino.h>
-#include <LedControl.h>
+#include <Arduino.h> // for Arduino IDE
+#include <LiquidCrystal.h> // for LCD Display
+#include <DHT.h> // for DHT11 Temperature Sensor
 
 // Digital Pins
 
@@ -12,21 +13,29 @@ File Owner: Varsan Jeyakkumar
 const int ECHO1 = 4;
 const int TRIGGER1 = 5;
 // Lighting
-const int LED1 = 11;
-const int LED2 = 12;
+const int LED1 = 10;
+const int LED2 = 11;
 // Display
-LedControl lc = LedControl(7, 9, 8, 1); // DIN, CLK, CS, number of devices
-const int DIN = 7;
-const int CS = 8;
-const int CLOCK = 9;
-
-// Analog Pins
-const int TEMPSIG = A1;
+const int D4 = 6;
+const int D5 = 7;
+const int D6 = 8;
+const int D7 = 9; // 4 Bits for Display 
+const int RS = 12;
+const int EN = 13; // Control Pins for Display
+// Temperature
+const int TEMPSIG = 3;
 
 // Variable Declaration for Calculation Variables
 float Xtime = 0;
 float distance = 0;
 
+// LCD
+LiquidCrystal LCD(RS, EN, D4, D5, D6, D7); // Initialize the LCD with the specified pins
+
+// Set up the DHT11 Sensor
+DHT dht(TEMPSIG, DHT11);
+
+// Function Prototypes
 void distance();
 void information();
 
@@ -41,15 +50,19 @@ void setup() {
     // Set pin modes for LEDs
     pinMode(LED1, OUTPUT);
     pinMode(LED2, OUTPUT);
+
+    // Set up LCD
+    LCD.begin(16, 2); // Initialize the LCD with 16 columns and 2 rows
+
+    // Set up DHT11 Sensor
+    dht.begin(); // Initialize the DHT11 sensor
+
     
-    // Set pin modes for Display
-    pinMode(DIN, OUTPUT);
-    pinMode(CS, OUTPUT);
-    pinMode(CLOCK, OUTPUT);
 }
 
 void loop() {
     distance(); // Call the distance function to measure and display distance, and also control LED
+    information(); // Call the information function to display additional information on the display
 }
 
 void distance() {
@@ -84,7 +97,20 @@ void distance() {
 }
 
 void information() {
-    // This function can be used to display additional information on the display
-    
+    LCD.clear(); // Clear the LCD before displaying new information
+
+    // Distance
+    LCD.setCursor(0, 0); // Set cursor to the first row
+    LCD.print("Dist: "); // Print label for distance
+    LCD.print(distance, 2); // Print the distance value on the LCD with 2 decimal places
+    LCD.print(" cm "); // Print unit for distance
+
+    // Temperature
+    float temperature = dht.readTemperature(); // Read temperature from DHT11 sensor
+    LCD.setCursor(0, 1); // Set cursor to the second row
+    LCD.print("Temp: ");
+    LCD.print(temperature, 1); // Print the temperature value on the LCD with 1 decimal place
+    LCD.print(" C ");
+
 }
 
