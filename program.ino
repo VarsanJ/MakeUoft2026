@@ -4,10 +4,11 @@ File Owner: Varsan Jeyakkumar
  */
 
 #include <Arduino.h> // for Arduino IDE
-
+#include <LiquidCrystal.h> // for LCD Display
+#include <DHT.h> // for DHT11 Temperature Sensor
 
 // Digital Pins
-int blah = 30;
+
 // Ultrasonic
 const int ECHO1 = 4;
 const int TRIGGER1 = 5;
@@ -28,6 +29,13 @@ const int TEMPSIG = 3;
 float Xtime = 0;
 float distance = 0;
 
+// LCD
+LiquidCrystal LCD(RS, EN, D4, D5, D6, D7); // Initialize the LCD with the specified pins
+
+// Set up the DHT11 Sensor
+DHT dht(TEMPSIG, DHT11);
+
+// Function Prototypes
 void distance();
 void information();
 
@@ -42,19 +50,14 @@ void setup() {
     // Set pin modes for LEDs
     pinMode(LED1, OUTPUT);
     pinMode(LED2, OUTPUT);
+
+    // Set up LCD
+    LCD.begin(16, 2); // Initialize the LCD with 16 columns and 2 rows
+
+    // Set up DHT11 Sensor
+    dht.begin(); // Initialize the DHT11 sensor
+
     
-    // Set pin modes for Display
-    pinMode(DIN, OUTPUT);
-    pinMode(CS, OUTPUT);
-    pinMode(CLOCK, OUTPUT);
-
-    // Set up the display
-    lc.shutdown(0, false); // Wake up the display
-    lc.setIntensity(0, 8); // Set brightness level
-    lc.clearDisplay(0); // Clear the display
-
-    // Set up the DHT11 Sensor
-    DHT dht(DHTPIN, DHT11);
 }
 
 void loop() {
@@ -94,7 +97,20 @@ void distance() {
 }
 
 void information() {
-    
-    
+    LCD.clear(); // Clear the LCD before displaying new information
+
+    // Distance
+    LCD.setCursor(0, 0); // Set cursor to the first row
+    LCD.print("Dist: "); // Print label for distance
+    LCD.print(distance, 2); // Print the distance value on the LCD with 2 decimal places
+    LCD.print(" cm "); // Print unit for distance
+
+    // Temperature
+    float temperature = dht.readTemperature(); // Read temperature from DHT11 sensor
+    LCD.setCursor(0, 1); // Set cursor to the second row
+    LCD.print("Temp: ");
+    LCD.print(temperature, 1); // Print the temperature value on the LCD with 1 decimal place
+    LCD.print(" C ");
+
 }
 
