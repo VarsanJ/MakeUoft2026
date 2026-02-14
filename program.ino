@@ -1,9 +1,9 @@
 /* Pin Allocation for Arduino Uno Q
-Last Modified: 2026-02-14, 11:47 AM
+Last Modified: 2026-02-14, 3:00 PM
 File Owner: Varsan Jeyakkumar
  */
 
-#include <Arduino.h> // for Arduino IDE
+// #include <Arduino.h> for Arduino IDE FOR VS CODE USE
 #include <LiquidCrystal.h> // for LCD Display
 #include <DHT.h> // for DHT11 Temperature Sensor
 
@@ -16,10 +16,10 @@ const int TRIGGER1 = 5;
 const int LED1 = 10;
 const int LED2 = 11;
 // Display
-const int D4 = 6;
-const int D5 = 7;
-const int D6 = 8;
-const int D7 = 9; // 4 Bits for Display 
+const int xD4 = 6;
+const int xD5 = 7;
+const int xD6 = 8;
+const int xD7 = 9; // 4 Bits for Display 
 const int RS = 12;
 const int EN = 13; // Control Pins for Display
 // Temperature
@@ -30,14 +30,37 @@ float Xtime = 0;
 float distance = 0;
 
 // LCD
-LiquidCrystal LCD(RS, EN, D4, D5, D6, D7); // Initialize the LCD with the specified pins
+LiquidCrystal LCD(RS, EN, xD4, xD5, xD6, xD7); // Initialize the LCD with the specified pins
 
 // Set up the DHT11 Sensor
 DHT dht(TEMPSIG, DHT11);
 
 // Function Prototypes
-void distance();
+void distanceF();
 void information();
+
+// Manual pulseIn implementation for Arduino Uno R4
+unsigned long pulseInX(uint8_t pin, uint8_t state, unsigned long timeout = 1000000L) {
+    unsigned long startMicros = micros();
+    
+    // Wait for pin to go to opposite state first
+    while (digitalRead(pin) == state) {
+        if (micros() - startMicros > timeout) return 0;
+    }
+    
+    // Wait for pin to go to desired state
+    while (digitalRead(pin) != state) {
+        if (micros() - startMicros > timeout) return 0;
+    }
+    
+    // Measure how long it stays in that state
+    unsigned long pulseStart = micros();
+    while (digitalRead(pin) == state) {
+        if (micros() - startMicros > timeout) return 0;
+    }
+    
+    return micros() - pulseStart;
+}
 
 void setup() {
     // Initialize Serial Communication
@@ -61,11 +84,11 @@ void setup() {
 }
 
 void loop() {
-    distance(); // Call the distance function to measure and display distance, and also control LED
+    distanceF(); // Call the distance function to measure and display distance, and also control LED
     information(); // Call the information function to display additional information on the display
 }
 
-void distance() {
+void distanceF() {
     // Trigger the Ultrasonic Sensor
     digitalWrite(TRIGGER1, LOW);
     delayMicroseconds(2);
@@ -74,7 +97,7 @@ void distance() {
     digitalWrite(TRIGGER1, LOW);
     
     // Read the Echo Pin
-    Xtime = pulseIn(ECHO1, HIGH);
+    Xtime = pulseInX(ECHO1, HIGH);
     
     // Calculate Distance (in cm)
     distance = (Xtime * 0.034) / 2;
@@ -113,4 +136,3 @@ void information() {
     LCD.print(" C ");
 
 }
-
