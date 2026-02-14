@@ -4,7 +4,7 @@ File Owner: Varsan Jeyakkumar
  */
 
 #include <Arduino.h> // for Arduino IDE
-#include <LedControl.h>
+
 
 // Digital Pins
 int blah = 30;
@@ -12,16 +12,17 @@ int blah = 30;
 const int ECHO1 = 4;
 const int TRIGGER1 = 5;
 // Lighting
-const int LED1 = 11;
-const int LED2 = 12;
+const int LED1 = 10;
+const int LED2 = 11;
 // Display
-LedControl lc = LedControl(7, 9, 8, 1); // DIN, CLK, CS, number of devices
-const int DIN = 7;
-const int CS = 8;
-const int CLOCK = 9;
-
-// Analog Pins
-const int TEMPSIG = A1;
+const int D4 = 6;
+const int D5 = 7;
+const int D6 = 8;
+const int D7 = 9; // 4 Bits for Display 
+const int RS = 12;
+const int EN = 13; // Control Pins for Display
+// Temperature
+const int TEMPSIG = 3;
 
 // Variable Declaration for Calculation Variables
 float Xtime = 0;
@@ -46,10 +47,19 @@ void setup() {
     pinMode(DIN, OUTPUT);
     pinMode(CS, OUTPUT);
     pinMode(CLOCK, OUTPUT);
+
+    // Set up the display
+    lc.shutdown(0, false); // Wake up the display
+    lc.setIntensity(0, 8); // Set brightness level
+    lc.clearDisplay(0); // Clear the display
+
+    // Set up the DHT11 Sensor
+    DHT dht(DHTPIN, DHT11);
 }
 
 void loop() {
     distance(); // Call the distance function to measure and display distance, and also control LED
+    information(); // Call the information function to display additional information on the display
 }
 
 void distance() {
@@ -84,7 +94,7 @@ void distance() {
 }
 
 void information() {
-    // This function can be used to display additional information on the display
+    
     
 }
 
