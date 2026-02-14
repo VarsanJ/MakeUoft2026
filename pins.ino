@@ -3,7 +3,7 @@ Last Modified: 2026-02-14, 11:47 AM
 File Owner: Varsan Jeyakkumar
  */
 
-// Digital Pins
+// Digital Pins (MODIFIED)
 
 // Ultrasonic
 const int ECHO1 = 4;
