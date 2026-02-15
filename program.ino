@@ -1,11 +1,6 @@
-/*
-Last Modified: 8:17 PM 2026-02-14, Varsan Jeyakkumar
-*/
-
 #include <LiquidCrystal.h>
 #include <DHT.h>
 
-// Pin definitions
 const int ECHO1 = 4;
 const int TRIGGER1 = 5;
 const int xD4 = 6;
@@ -15,13 +10,11 @@ const int xD7 = 9;
 const int RS = 12;
 const int EN = 13;
 const int LED1 = 11;
-const int TEMPSIG = 2; 
+const int TEMPSIG = 2; // DHT11 on pin 2
 
-// Kinemaics variables
 float distance = 0;
-float temperature = 25.0;
+float temperature = 22.0;
 
-// Initialize LCD and DHT sensor
 LiquidCrystal LCD(RS, EN, xD4, xD5, xD6, xD7);
 DHT dht(TEMPSIG, DHT11);
 
