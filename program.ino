@@ -1,6 +1,7 @@
 #include <LiquidCrystal.h>
 #include <DHT.h>
 
+// Pin Definitions
 const int ECHO1 = 4;
 const int TRIGGER1 = 5;
 const int xD4 = 6;
@@ -12,18 +13,19 @@ const int EN = 13;
 const int LED1 = 11;
 const int TEMPSIG = 2; // DHT11 on pin 2
 
-float distance = 0;
-float temperature = 22.0;
+// Variables for Measuring Readings
+float distance = 0; .// Default to 0 cm until first reading
+float temperature = 22.0; // Default to 22°C until first reading
 
-LiquidCrystal LCD(RS, EN, xD4, xD5, xD6, xD7);
-DHT dht(TEMPSIG, DHT11);
-
+// Initialize LCD and DHT
+LiquidCrystal LCD(RS, EN, xD4, xD5, xD6, xD7); // LCD pins
+DHT dht(TEMPSIG, DHT11); // DHT11 sensor on pin 2
 unsigned long lastDHTRead = 0;
 
-// Manual pulse measurement
+// Manual pulse measurement function was implemented since Uno Q does not have PulseIn functionality
 unsigned long measurePulse(uint8_t pin) {
   unsigned long timeout = 50000;
-  unsigned long startTime = micros();
+  unsigned long startTime = micros(); // Micros defines # second since start, use at clock since we only care about delta versus abs value for time
   
   while (digitalRead(pin) == LOW) {
     if (micros() - startTime > timeout) return 0;
@@ -39,17 +41,17 @@ unsigned long measurePulse(uint8_t pin) {
 }
 
 void setup() {
+    // Pin Modes
     pinMode(ECHO1, INPUT);
     pinMode(TRIGGER1, OUTPUT);
     pinMode(LED1, OUTPUT);
 
+    // Startup Sequence
     LCD.begin(16, 2);
     LCD.clear();
-    LCD.print("Initializing...");
-    
+    LCD.print("Initializing");
     dht.begin();
     delay(2000);
-    
     LCD.clear();
     LCD.print("Ready!");
     delay(1000);
@@ -62,7 +64,7 @@ void loop() {
     // Read DHT11 every 2 seconds
     if (millis() - lastDHTRead >= 2000) {
         float newTemp = dht.readTemperature();
-        if (!isnan(newTemp)) {
+        if (!isnan(newTemp)) { // We only update if we got a valid reading
             temperature = newTemp;
         }
         lastDHTRead = millis();
@@ -100,7 +102,7 @@ void displayInfo() {
     LCD.setCursor(0, 0);
     
     if (distance == 0) {
-        LCD.print("Dist: ---");
+        LCD.print("Dist: ---"); // No Distance Found
     } else {
         LCD.print("Dist: ");
         LCD.print(distance, 1);
